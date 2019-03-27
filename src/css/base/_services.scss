@@ -1,0 +1,35 @@
+.services {
+    // background: $clr-black;
+    // height: 100vh;
+    position: relative;
+
+    .think-img {
+        height: 50vh;
+        background-image: url("../img/talk.jpg");
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
+
+    p {
+        margin-left: -100px;
+        margin-right: 150px;
+        background: rgba(255, 255, 255, 0.7);
+        padding: 25px 20px;
+        position: absolute;
+        z-index: 99;
+
+        &.right {
+            margin-right: -100px;
+        margin-left: 150px;
+
+            text-align: right;
+        }
+    }
+
+    h1 {
+        &.right {
+            text-align: right;
+        }
+    }
+}

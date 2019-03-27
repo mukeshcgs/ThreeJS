@@ -1,0 +1,58 @@
+.mouse-ico {
+    width: 24px;
+    height: 50px;
+    border: 1px solid #cccccc;
+    position: absolute;
+    bottom: 10px;
+    background: $clr-root;
+    z-index: 55;
+    border-radius: 25px;
+    margin-left: -12px;
+    left: 50%;
+    display: block;
+
+    &:after {
+        content: '';
+        display: block;
+        border-radius: 2px;
+        height: 5px;
+        width: 2px;
+        position: absolute;
+        top: 8px;
+        left: -1px;
+        left: 50%;
+        background: $clr-primary;
+        -webkit-animation: mymove 2s infinite; /* Safari 4.0 - 8.0 */
+        animation: mymove 2s infinite;
+        animation-timing-function: ease-out; /* or: ease, ease-in, ease-in-out, linear, cubic-bezier(x1, y1, x2, y2) */
+
+    }
+}
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes mymove {
+    0% {
+        top: 8px;
+    }
+
+    50% {
+        top: 16px;
+    }
+    100% {
+        top: 8px;
+    }
+}
+
+/* Standard syntax */
+@keyframes mymove {
+    0% {
+        top: 8px;
+    }
+
+    50% {
+        top: 16px;
+    }
+    100% {
+        top: 8px;
+    }
+}
