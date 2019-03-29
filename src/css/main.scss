@@ -3,7 +3,7 @@
   @Project : RaveBiz
   @Dev : Mukesh
   @Date :6th Jan 18;
-*/ 
+*/
 
 
 /* config */
@@ -12,7 +12,7 @@
 @import "config/mixin";
 
 /* element */
- 
+
 @import "element/reset";
 @import "element/elements";
 @import "common/common";
@@ -25,8 +25,8 @@
 
 /* lib-extend */
 
- @import "lib-extend/swiper";
- @import "lib-extend/map";
+@import "lib-extend/swiper";
+@import "lib-extend/map";
 
 /* Component */
 
@@ -44,4 +44,4 @@
 @import "base/bs-popup";
 @import "base/mouse";
 @import "base/services";
-
+@import "base/scroll";

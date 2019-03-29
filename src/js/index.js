@@ -6,52 +6,49 @@ import '../css/main.scss';
 import $ from 'jquery';
 window.jQuery = $;
 window.$ = $;
+
 //Libs
 import 'gsap'
 import { Tone } from 'tone';
-import * as THREE from 'three';
+import { TimelineMax, Power4 } from 'gsap';
+import ScrollMagic from 'scrollmagic/scrollmagic/minified/ScrollMagic.min';
+
+import 'animation.gsap';
+import 'debug.addIndicators';
+
 
 var winW = window.innerWidth;
 var winH = window.innerHeight;
 
-var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera(75, winW / winH, 0.1, 1000);
-
-var renderer = new THREE.WebGLRenderer();
-renderer.setSize(winW, winH);
-document.body.appendChild(renderer.domElement);
-
-//Create shape
-var geometry = new THREE.BoxGeometry(2, 2, 2, 20, 20, 20);
-
-var material = new THREE.MeshBasicMaterial({ color: 0xFFFFFF, wireframe: true });
-var cube = new THREE.Mesh(geometry, material);
-
-scene.add(cube);
-
-camera.position.z = 5;
-
-//Game logic
-var update = function () {
-	cube.rotation.x += 0.01;
-	cube.rotation.y += 0.01;
-}
-
-//Draw Scene
-var render = function () {
-	renderer.render(scene, camera);
-}
-
-//Run game loop (update, render, repeat)
-var GameLoop = function () {
-	requestAnimationFrame(GameLoop);
-
-	update();
-	render();
-}
-GameLoop();
+var controller = new ScrollMagic.Controller();
 
 //Code
-// $(document).ready(function () { });
+$(document).ready(function () {
+});
+// init controller
+$(".project").each(function () {
+	var $overlay = $(this).find(".overlay"),
+		$projectInfo = $(this).find(".project-info"),
+		$smallTitle = $(this).find(".small-title"),
+		$projectLink = $(this).find("project-link"),
+		$h5 = $(this).find("h5")
+
+	var animateIn = new TimelineMax();
+
+	animateIn
+		.fromTo($overlay, 2, { scale: 1.5, skewX: 30 }, { skewX: 0, xPercent: 100, transformOrigin: "0% 100%", ease: Power4.easeOut })
+		.from($projectInfo, 1, { scaleY: 0, transformOrigin: "bottom left" }, "-=0.5")
+		.from($smallTitle, 0.3, { autoAlpha: 0, y: 30, ease: Power4.easeOut })
+		.from($projectLink, 0.3, { autoAlpha: 0, y: 30, ease: Power4.easeOut })
+		.from($h5, 0.3, { autoAlpha: 0, y: 30, ease: Power4.easeOut })
+	console.log(this);
+
+	//make a scrollmagic scene
+	var scene = new ScrollMagic.Scene({
+		triggerElement: this,
+	}).addIndicators().setTween(animateIn).addTo(controller)
+})
+
+
 
 console.log("%cMade with ❤︎️ by Mukesh — Designer by profession, an artist by passion. — mukeshthankar.com", "background:#000;color:#fff;padding:0.5em 1em;line-height:2;");

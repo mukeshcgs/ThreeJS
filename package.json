@@ -1,5 +1,5 @@
 {
-  "name": "threejs",
+  "name": "gsap-scrollmagic",
   "version": "1.0.0",
   "main": "webpack.common.js",
   "scripts": {
@@ -19,6 +19,7 @@
     "es6-promise": "^4.2.4",
     "gsap": "^2.0.1",
     "jquery": "^3.2.1",
+    "scrollmagic": "^2.0.6",
     "three": "^0.102.1",
     "tone": "^0.12.80",
     "url-loader": "^1.0.1",
