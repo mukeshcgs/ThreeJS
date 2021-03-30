@@ -1,54 +1,105 @@
-import 'babel-polyfill';
-//Files
-import '../css/main.scss';
+import '../css/style.css';
+import * as THREE from 'three';
+import {
+    OrbitControls
+} from '@three-ts/orbit-controls';
 
-//jQuery
-import $ from 'jquery';
-window.jQuery = $;
-window.$ = $;
+import fshader from '../shaders/fshader.frag'
+import vshader from '../shaders/vshader.vert'
 
-//Libs
-import 'gsap'
-import { Tone } from 'tone';
-import { TimelineMax, Power4 } from 'gsap';
-import ScrollMagic from 'scrollmagic/scrollmagic/minified/ScrollMagic.min';
+import fshader2 from '../shaders/fshader2.frag'
+import vshader2 from '../shaders/vshader2.vert'
 
-import 'animation.gsap';
-import 'debug.addIndicators';
+import fNnoiseShader from '../shaders/FNoiseShader.frag'
+import vNoiseShader from '../shaders/vNoiseShader.vert'
 
+import flower from '../img/flower.jpg'
 
-var winW = window.innerWidth;
-var winH = window.innerHeight;
+import gsap from "gsap";
+import * as dat from 'dat.gui';
 
-var controller = new ScrollMagic.Controller();
+let camera, scene, renderer;
+let geometry, material, mesh;
+let planeGeometry, planeMaterial, planeMesh;
 
-//Code
-$(document).ready(function () {
-});
-// init controller
-$(".project").each(function () {
-	var $overlay = $(this).find(".overlay"),
-		$projectInfo = $(this).find(".project-info"),
-		$smallTitle = $(this).find(".small-title"),
-		$projectLink = $(this).find("project-link"),
-		$h5 = $(this).find("h5")
+init();
 
-	var animateIn = new TimelineMax();
+function init() {
+    const gui = new dat.GUI();
 
-	animateIn
-		.fromTo($overlay, 2, { scale: 1.5, skewX: 30 }, { skewX: 0, xPercent: 100, transformOrigin: "0% 100%", ease: Power4.easeOut })
-		.from($projectInfo, 1, { scaleY: 0, transformOrigin: "bottom left" }, "-=0.5")
-		.from($smallTitle, 0.3, { autoAlpha: 0, y: 30, ease: Power4.easeOut })
-		.from($projectLink, 0.3, { autoAlpha: 0, y: 30, ease: Power4.easeOut })
-		.from($h5, 0.3, { autoAlpha: 0, y: 30, ease: Power4.easeOut })
-	console.log(this);
+    // PerspectiveCamera( fov : Number, aspect : Number, near : Number, far : Number )
+    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 100);
+    camera.position.z = 10;
+    var time = 0;
+    var isPlaying = true
+    scene = new THREE.Scene();
 
-	//make a scrollmagic scene
-	var scene = new ScrollMagic.Scene({
-		triggerElement: this,
-	}).addIndicators().setTween(animateIn).addTo(controller)
-})
+    // geometry = new THREE.IcosahedronGeometry(1, 10);
+    //SphereGeometry(radius : Float, widthSegments : Integer, heightSegments : Integer, phiStart : Float, phiLength : Float, thetaStart : Float, thetaLength : Float)
+    geometry = new THREE.SphereGeometry(1, 20, 20);
 
 
+    // PlaneGeometry(width : Float, height : Float, widthSegments : Integer, heightSegments : Integer)
+    planeGeometry = new THREE.PlaneGeometry(5, 5, 15, 15);
+    //Basic Material color
+    // planeMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00, side: THREE.DoubleSide });
+    // Shader Materrial
+    let uniforms = {
+        u_time: { value: 0 },
+        u_resolution: { value: new THREE.Vector4() },
+        u_color: { value: new THREE.Color(0x3f51b5) },
+        u_time: { value: 0.0 },
+        u_mouse: { value: { x: 0.0, y: 0.0 } },
+        u_resolution: { value: { x: 0, y: 0 } },
+    }
+    planeMaterial = new THREE.ShaderMaterial({
+        uniforms: uniforms,
+        wireframe: true,
+        vertexShader: vNoiseShader,
+        fragmentShader: fNnoiseShader
 
-console.log("%cMade with ❤︎️ by Mukesh — Designer by profession, an artist by passion. — mukeshthankar.com", "background:#000;color:#fff;padding:0.5em 1em;line-height:2;");
+    });
+    // planeMesh = new THREE.Mesh(planeGeometry, planeMaterial);
+    planeMesh = new THREE.Points(planeGeometry, planeMaterial);
+    scene.add(planeMesh);
+
+    material = new THREE.ShaderMaterial({
+        uniforms: uniforms,
+        wireframe: true,
+        vertexShader: vNoiseShader,
+        fragmentShader: fNnoiseShader
+    });
+
+    mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    //LIGHT
+    const light = new THREE.DirectionalLight(0xdfebff, 0.5);
+    const light1 = new THREE.DirectionalLight(0xdfebff, 1);
+    light.position.set(50, 200, 100);
+    light.position.multiplyScalar(1.3);
+    light.castShadow = true;
+    scene.add(light1);
+    scene.add(light);
+
+    //Renderer
+    let myCanvas = document.getElementById('myCanvas');
+    renderer = new THREE.WebGLRenderer({
+        canvas: myCanvas,
+        antialias: true
+    });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setAnimationLoop(animation);
+    document.body.appendChild(renderer.domElement);
+    let controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableZoom = true;
+    controls.autoRotate = false;
+
+}
+
+function animation(time) {
+    // mesh.rotation.x = time / 2000;
+    mesh.rotation.y = time / 1000;
+    // controls.update();
+    renderer.render(scene, camera);
+}
