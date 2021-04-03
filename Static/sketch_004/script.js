@@ -90,6 +90,7 @@ export default class Sketch {
     }
     addobjects() {
         let that = this;
+
         const texture = new THREE.TextureLoader().load("https://dl.dropbox.com/s/cyiex5ykp2xhau4/transform_image.jpg");
 
         let uniforms = {
@@ -111,8 +112,7 @@ export default class Sketch {
         });
 
         this.geometry = new THREE.PlaneGeometry(5, 5, 15, 15);
-        this.plane = new THREE.Mesh(this.geometry, this.material);
-        // this.plane = new THREE.Points(this.geometry, this.material);
+        this.plane = new THREE.Points(this.geometry, this.material);
         this.scene.add(this.plane);
 
         this.vertexDisplacement = new Float32Array(this.geometry.attributes.position.count)
@@ -121,15 +121,18 @@ export default class Sketch {
         }
         this.geometry.setAttribute('vertexDisplacement', new THREE.BufferAttribute(this.vertexDisplacement, 1))
     }
+
     stop() {
         this.isplaying = false;
     }
+
     play() {
         if (!this.isplaying) {
             this.render();
             this.isplaying = true;
         }
     }
+
     render() {
         if (!this.isplaying) return;
         this.u_time += 0.05;
@@ -139,7 +142,6 @@ export default class Sketch {
         this.controls.update();
     }
 }
-
 
 new Sketch({
     dom: document.getElementById('myCanvas'),

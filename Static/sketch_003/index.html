@@ -7,7 +7,7 @@
         content="IE=edge">
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0">
-    <title>Sketch 001</title>
+    <title>Sketch 003</title>
 
     <link rel="stylesheet"
         href="../css/reset.css">
@@ -19,18 +19,16 @@
 </head>
 
 <body>
-    <h3 class="sketch-name"> Sketch 001 </h3>
-
+    <div class="sketch-name">
+        <p>Sketch 003</p>
+        <h3>Lines, Points</h3>
+    </div>
     <h3 class="back-btn"> <a href="../index.html">Back</a> </h3>
     <div id="myCanvas"></div>
-
     <!-- SCRIPTS -->
-
     <script type="module"
         src="./script.js"></script>
-
     <!-- VERTIX SHADER -->
-
     <script type="x-shader/x-vertex"
         id="vertexShader">
         uniform mat4 modelViewMatrix;
@@ -56,6 +54,7 @@
         uniform float u_time;
         uniform sampler2D texture;
         varying vec2 vUv;
+
         void main() {
                 vec2 st = gl_FragCoord.xy/u_resolution.xy;
                 gl_FragColor = texture2D(texture, vUv);
