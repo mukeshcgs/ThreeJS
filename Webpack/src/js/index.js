@@ -19,7 +19,7 @@ import gsap from "gsap";
 import * as dat from 'dat.gui';
 
 let camera, scene, renderer;
-let geometry, material, mesh;
+let sphereGeometry, sphereMaterial, sphereMesh;
 let planeGeometry, planeMaterial, planeMesh;
 
 init();
@@ -34,9 +34,9 @@ function init() {
     var isPlaying = true
     scene = new THREE.Scene();
 
-    // geometry = new THREE.IcosahedronGeometry(1, 10);
+    // sphereGeometry = new THREE.IcosahedronGeometry(1, 10);
     //SphereGeometry(radius : Float, widthSegments : Integer, heightSegments : Integer, phiStart : Float, phiLength : Float, thetaStart : Float, thetaLength : Float)
-    geometry = new THREE.SphereGeometry(1, 20, 20);
+    sphereGeometry = new THREE.SphereGeometry(1, 20, 20);
 
 
     // PlaneGeometry(width : Float, height : Float, widthSegments : Integer, heightSegments : Integer)
@@ -47,7 +47,7 @@ function init() {
     let uniforms = {
         u_time: { value: 0 },
         u_resolution: { value: new THREE.Vector4() },
-        u_color: { value: new THREE.Color(0x3f51b5) },
+        u_color: { value: new THREE.Color(0xffff00) },
         u_time: { value: 0.0 },
         u_mouse: { value: { x: 0.0, y: 0.0 } },
         u_resolution: { value: { x: 0, y: 0 } },
@@ -55,27 +55,28 @@ function init() {
     planeMaterial = new THREE.ShaderMaterial({
         uniforms: uniforms,
         wireframe: true,
-        vertexShader: vNoiseShader,
-        fragmentShader: fNnoiseShader
+        vertexShader: vshader2,
+        fragmentShader: fshader2
 
     });
-    // planeMesh = new THREE.Mesh(planeGeometry, planeMaterial);
-    planeMesh = new THREE.Points(planeGeometry, planeMaterial);
+    planeMesh = new THREE.Mesh(planeGeometry, planeMaterial);
+    // planeMesh = new THREE.Points(planeGeometry, planeMaterial);
     scene.add(planeMesh);
+    planeMesh.material.side = THREE.DoubleSide;
 
-    material = new THREE.ShaderMaterial({
+    sphereMaterial = new THREE.ShaderMaterial({
         uniforms: uniforms,
-        wireframe: true,
-        vertexShader: vNoiseShader,
-        fragmentShader: fNnoiseShader
+        wireframe: false,
+        vertexShader: vshader,
+        fragmentShader: fshader
     });
 
-    mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
+    sphereMesh = new THREE.Mesh(sphereGeometry, sphereMaterial);
+    scene.add(sphereMesh);
 
     //LIGHT
-    const light = new THREE.DirectionalLight(0xdfebff, 0.5);
-    const light1 = new THREE.DirectionalLight(0xdfebff, 1);
+    const light = new THREE.DirectionalLight(0xcccccc, 0.5);
+    const light1 = new THREE.DirectionalLight(0xFFFFFF, 1);
     light.position.set(50, 200, 100);
     light.position.multiplyScalar(1.3);
     light.castShadow = true;
@@ -98,8 +99,10 @@ function init() {
 }
 
 function animation(time) {
-    // mesh.rotation.x = time / 2000;
-    mesh.rotation.y = time / 1000;
+    // sphereMesh.rotation.x = time / 2000;
+    // sphereMesh.rotation.y = time / 1000;
+    planeMesh.rotation.x = time / 2000;
+    planeMesh.rotation.y = time / 1000;
     // controls.update();
     renderer.render(scene, camera);
 }

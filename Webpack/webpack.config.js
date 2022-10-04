@@ -30,8 +30,11 @@ module.exports = {
             },
             {
                 test: /\.(glsl|frag|vert)$/,
-                use: 'webpack-glsl-loader'
+                use: [{
+                    loader: 'raw-loader',
+                }, ],
             },
+
             // {
             //     test: /\.(glsl|frag|vert)$/,
             //     exclude: /node_modules/,
@@ -59,7 +62,7 @@ module.exports = {
     devServer: {
         contentBase: path.resolve(__dirname, 'dist'),
         watchContentBase: true,
-        host: '0.0.0.0', //your ip address
+        // host: '0.0.0.0', //your ip address
         port: 8080,
         disableHostCheck: true,
     }
